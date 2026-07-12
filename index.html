@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张力琛 - 个人简历</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5f7a;
+            --primary-light: #2e8b9e;
+            --accent: #c84b31;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --border: #e1e8ed;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a3a4a 0%, #1a5f7a 100%);
+            color: white;
+            padding: 40px 0;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .sidebar-avatar {
+            width: 100px;
+            height: 130px;
+            border-radius: 8px;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .sidebar-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            opacity: 0.85;
+            color: #a8d5e5;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin: 4px 16px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .section {
+            padding: 50px 60px;
+            max-width: 900px;
+        }
+
+        .section:not(:last-child) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        /* 个人信息卡片 */
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 40px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: baseline;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 100px;
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .info-value.highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .info-full {
+            grid-column: 1 / -1;
+        }
+
+        /* 教育背景 */
+        .edu-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px 35px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .edu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .edu-school {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .edu-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edu-major {
+            font-size: 16px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .edu-time {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .edu-detail {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .edu-papers {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #f0f7ff;
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .edu-papers-title {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .edu-papers-text {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* 技术栈 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .tech-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 3px solid var(--primary);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .tech-card.accent-card {
+            border-top-color: var(--accent);
+        }
+
+        .tech-category {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-category.accent {
+            color: var(--accent);
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-item {
+            background: #f0f4f8;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text);
+            border: 1px solid #e1e8ed;
+        }
+
+        .tech-item.master {
+            background: #e8f4f8;
+            border-color: #b8d4e3;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tech-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 14px;
+            line-height: 1.7;
+        }
+
+        /* 工作经历时间轴 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .exp-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exp-company {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .exp-time {
+            background: #e8f4f8;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .exp-position {
+            font-size: 16px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .exp-location {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+
+        .exp-section {
+            margin-bottom: 18px;
+        }
+
+        .exp-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exp-section-title.ai {
+            color: var(--accent);
+        }
+
+        .exp-list {
+            list-style: none;
+        }
+
+        .exp-list li {
+            padding: 6px 0;
+            padding-left: 18px;
+            position: relative;
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .exp-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .exp-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.7;
+            border-left: 3px solid var(--primary-light);
+        }
+
+        /* 项目经历 */
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .project-header {
+            margin-bottom: 20px;
+        }
+
+        .project-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .project-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .project-badge {
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .project-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        /* 三个模块并排 */
+        .workflow-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .workflow-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e8eef4;
+            transition: all 0.3s;
+        }
+
+        .workflow-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .workflow-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .workflow-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .workflow-list {
+            list-style: none;
+        }
+
+        .workflow-list li {
+            font-size: 13px;
+            color: var(--text);
+            padding: 4px 0;
+            padding-left: 14px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .workflow-list li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            color: var(--primary-light);
+            font-size: 6px;
+            top: 8px;
+        }
+
+        .kb-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 14px 0;
+        }
+
+        .kb-item {
+            background: white;
+            padding: 10px 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text);
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+
+        .kb-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .kb-label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .value-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #d4e9f0;
+        }
+
+        .value-box-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .value-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .value-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* 核心竞争力 */
+        .assess-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .assess-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-top: 3px solid var(--primary);
+        }
+
+        .assess-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .assess-card:nth-child(2) {
+            border-top-color: var(--accent);
+        }
+
+        .assess-card:nth-child(3) {
+            border-top-color: #2e8b57;
+        }
+
+        .assess-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assess-card:nth-child(2) .assess-title {
+            color: var(--accent);
+        }
+
+        .assess-card:nth-child(3) .assess-title {
+            color: #2e8b57;
+        }
+
+        .assess-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .assess-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f0 100%);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #c5dfe8;
+        }
+
+        .tag.accent {
+            background: linear-gradient(135deg, #fdf0ec 0%, #f8dcd4 100%);
+            color: var(--accent);
+            border-color: #e8c4b8;
+        }
+
+        .tag.green {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .section {
+                padding: 30px 25px;
+            }
+            .profile-card,
+            .tech-grid,
+            .assess-grid,
+            .workflow-row,
+            .kb-grid,
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 选中高亮 */
+        ::selection {
+            background: var(--primary-light);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">
+                <img src="photo.jpg" alt="证件照">
+            </div>
+            <div class="sidebar-name">张力琛</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" onclick="scrollToSection('profile')">
+                    <span class="nav-icon">👤</span>
+                    <span>个人信息</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('education')">
+                    <span class="nav-icon">🎓</span>
+                    <span>教育背景</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('skills')">
+                    <span class="nav-icon">💻</span>
+                    <span>技术栈</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('experience')">
+                    <span class="nav-icon">🏗️</span>
+                    <span>工作经历</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('projects')">
+                    <span class="nav-icon">🚀</span>
+                    <span>项目经历</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('assessment')">
+                    <span class="nav-icon">⭐</span>
+                    <span>核心竞争力</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            立足西安 · 建筑+AI复合背景
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 个人信息 -->
+        <section id="profile" class="section">
+            <h2 class="section-title">个人信息</h2>
+            <div class="profile-card">
+                <div class="info-row">
+                    <span class="info-label">姓 名</span>
+                    <span class="info-value">张力琛</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">性 别</span>
+                    <span class="info-value">男</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">出生年月</span>
+                    <span class="info-value">1998年9月</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">政治面貌</span>
+                    <span class="info-value">中共党员</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">联系电话</span>
+                    <span class="info-value">155-0056-2192</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">电子邮箱</span>
+                    <span class="info-value">zhanglichen0711@163.com</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">现居城市</span>
+                    <span class="info-value highlight">西安</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">英语水平</span>
+                    <span class="info-value">CET-6</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 教育背景 -->
+        <section id="education" class="section">
+            <h2 class="section-title">教育背景</h2>
+            <div class="edu-card">
+                <div class="edu-header">
+                    <div class="edu-school">云南大学</div>
+                    <span class="edu-badge">双一流院校</span>
+                </div>
+                <div class="edu-major">土木水利专业 · 硕士研究生</div>
+                <div class="edu-time">2020年9月 — 2023年6月</div>
+                <div class="edu-detail">
+                    硕士阶段接受系统的科研训练，具备扎实的文献调研、数据分析与技术报告撰写能力。
+                    研究方向涉及建筑工程、碳排放管理等方向，培养了严谨的逻辑思维和解决复杂工程问题的能力，
+                    为后续AI技术学习及产品化思维奠定了良好的方法论基础。
+                </div>
+                <div class="edu-papers">
+                    <div class="edu-papers-title">📚 学术成果</div>
+                    <div class="edu-papers-text">
+                        研究方向涉及建筑工程、碳排放管理等方向，发表了<strong>中英文核心期刊3篇</strong>，具备扎实的学术写作能力与数据分析能力。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术栈 -->
+        <section id="skills" class="section">
+            <h2 class="section-title">技术栈</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-category">🐍 编程与数据</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">Python</span>
+                        <span class="tech-item master">MySQL</span>
+                        <span class="tech-item">数据处理</span>
+                        <span class="tech-item">API开发</span>
+                        <span class="tech-item">脚本自动化</span>
+                    </div>
+                    <div class="tech-desc">
+                        掌握Python核心编程与MySQL数据库设计，能够独立完成数据清洗、接口开发、脚本自动化及数据处理分析任务，具备扎实的工程化编程能力。
+                    </div>
+                </div>
+
+                <div class="tech-card accent-card">
+                    <div class="tech-category accent">🤖 智能体应用平台开发</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">Dify</span>
+                        <span class="tech-item master">Coze</span>
+                        <span class="tech-item master">RAGFlow</span>
+                        <span class="tech-item">RAG检索增强</span>
+                        <span class="tech-item">提示词工程</span>
+                        <span class="tech-item">Agent智能体</span>
+                        <span class="tech-item">工作流编排</span>
+                        <span class="tech-item">知识库构建</span>
+                    </div>
+                    <div class="tech-desc">
+                        熟练运用Dify、Coze进行AI应用搭建，掌握RAGFlow企业级知识库部署与向量检索优化。精通RAG架构设计与调优，擅长复杂提示词编写与多Agent协作系统的设计实现，能够独立完成从需求分析到部署上线的全链路开发。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工作经历 -->
+        <section id="experience" class="section">
+            <h2 class="section-title">工作经历</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="exp-card">
+                        <div class="exp-header">
+                            <div class="exp-company">中国建筑第七工程局有限公司</div>
+                            <span class="exp-time">2023.07 — 至今</span>
+                        </div>
+                        <div class="exp-position">技术员 / AI应用开发</div>
+                        <div class="exp-location">📍 西安及周边地区</div>
+
+                        <div class="exp-section">
+                            <div class="exp-section-title ai">🤖 AI应用开发与数字化转型（重点方向）</div>
+                            <ul class="exp-list">
+                                <li><strong>企业AI应用平台搭建：</strong>负责公司信息管理部门AI应用平台的规划与搭建，基于Dify平台构建面向技术质量管理的智能助手系统，推动AI技术在企业内部的落地应用。</li>
+                                <li><strong>知识库系统建设：</strong>主导RAGFlow企业级知识库架构设计，完成建筑工程标准规范、企业制度、施工方案模板等文档的向量化存储与检索优化，实现专业场景下的高精度知识检索。</li>
+                                <li><strong>智能工作流开发：</strong>独立设计并开发规范智能查询、施工方案审核、科技质量问答三大核心工作流，将传统数小时的资料查阅工作缩短至分钟级响应。</li>
+                                <li><strong>AI工具推广与培训：</strong>面向技术质量部门组织AI工具使用培训，编写操作手册与最佳实践指南，推动一线技术人员从"经验驱动"向"知识驱动"的工作模式转型。</li>
+                                <li><strong>数字化方案设计：</strong>参与企业数字化转型技术方案设计，结合建筑行业业务场景提出AI落地的可行性路径，协助制定技术质量管理数字化升级规划。</li>
+                            </ul>
+                        </div>
+
+                        <div class="exp-section">
+                            <div class="exp-section-title">🏗️ 施工技术管理（基础工作）</div>
+                            <div class="exp-summary">
+                                负责房建项目施工现场技术指导、质量验收管控、图纸变更管理及技术资料归档等基础技术管理工作。主导QC成果编制、企业工法编写及专利技术交底书撰写，具备扎实的工程技术规范理解能力与一线实践经验。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目经历 -->
+        <section id="projects" class="section">
+            <h2 class="section-title">项目经历</h2>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name">建筑工程技术质量管理助手</div>
+                    <div class="project-meta">
+                        <span>📅 2024.06 — 2024.09</span>
+                        <span>🛠️ Dify + RAGFlow + Python</span>
+                        <span class="project-badge">企业级AI应用</span>
+                    </div>
+                </div>
+
+                <div class="project-text">
+                    <strong>项目背景：</strong>针对建筑企业技术质量管理中规范查询效率低、方案编制依赖人工经验、知识传承困难等痛点，基于Dify平台搭建智能化知识检索与内容生成系统，将企业核心知识资产与大模型能力深度融合。
+                </div>
+
+                <div class="project-section">
+                    <div class="workflow-row">
+                        <div class="workflow-card">
+                            <div class="workflow-icon">🔍</div>
+                            <div class="workflow-title">规范图集智能查询</div>
+                            <ul class="workflow-list">
+                                <li>自然语言提问，自动检索知识库</li>
+                                <li>生成带规范引用的专业回答</li>
+                                <li>设置置信度阈值，确保回答质量</li>
+                            </ul>
+                        </div>
+                        <div class="workflow-card">
+                            <div class="workflow-icon">✅</div>
+                            <div class="workflow-title">施工方案智能审核</div>
+                            <ul class="workflow-list">
+                                <li>上传方案自动提取关键信息</li>
+                                <li>与规范标准交叉比对识别风险</li>
+                                <li>输出结构化审核报告与修改建议</li>
+                            </ul>
+                        </div>
+                        <div class="workflow-card">
+                            <div class="workflow-icon">🏆</div>
+                            <div class="workflow-title">科技质量专项问答</div>
+                            <ul class="workflow-list">
+                                <li>QC选题参考与原因分析推荐</li>
+                                <li>工法编制框架自动生成</li>
+                                <li>专利交底书模板智能调用</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-section">
+                    <div style="font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 10px;">📚 七大知识库体系</div>
+                    <div class="kb-grid">
+                        <div class="kb-item">
+                            <div class="kb-number">01</div>
+                            <div class="kb-label">标准规范图集</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">02</div>
+                            <div class="kb-label">企业管理制度</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">03</div>
+                            <div class="kb-label">施工方案模板</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">04</div>
+                            <div class="kb-label">QC/工法/专利</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">05</div>
+                            <div class="kb-label">施工工艺工法</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">06</div>
+                            <div class="kb-label">质量通病案例</div>
+                        </div>
+                        <div class="kb-item">
+                            <div class="kb-number">07</div>
+                            <div class="kb-label">法律法规政策</div>
+                        </div>
+                        <div class="kb-item" style="background: var(--primary); color: white;">
+                            <div class="kb-number" style="color: white;">7</div>
+                            <div class="kb-label" style="color: rgba(255,255,255,0.9);">大知识库</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="value-box">
+                    <div class="value-box-title">📈 项目价值与技术亮点</div>
+                    <div class="project-text" style="margin-bottom: 0;">
+                        基于RAGFlow完成文档解析、分块策略与向量检索配置，针对建筑行业术语进行检索优化，召回准确率显著提升。具备Dify平台完整的应用设计、工作流编排、知识库集成能力，独立完成从需求分析到测试迭代的全流程开发，实现"经验型"向"知识驱动型"工作方式的升级。
+                    </div>
+                    <div class="value-grid">
+                        <div class="value-item">
+                            <div class="value-number">分钟级</div>
+                            <div class="value-label">响应速度</div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-number">7大</div>
+                            <div class="value-label">知识库体系</div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-number">3套</div>
+                            <div class="value-label">核心工作流</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心竞争力 -->
+        <section id="assessment" class="section">
+            <h2 class="section-title">核心竞争力</h2>
+            <div class="assess-grid">
+                <div class="assess-card">
+                    <div class="assess-title">🎯 复合型AI落地能力</div>
+                    <div class="assess-text">
+                        土木水利专业硕士 + 三年建筑企业一线经验 + 系统AI技术能力，是国内少有的"既懂建筑业务、又懂AI落地"的复合型人才。能够从业务视角精准识别AI应用场景，设计出真正"能用、好用"的智能工具，确保AI项目在企业内部高效落地。
+                    </div>
+                    <div class="assess-tags">
+                        <span class="tag">业务洞察</span>
+                        <span class="tag">场景落地</span>
+                        <span class="tag">跨域整合</span>
+                    </div>
+                </div>
+
+                <div class="assess-card">
+                    <div class="assess-title">🚀 全栈AI应用开发能力</div>
+                    <div class="assess-text">
+                        精通Dify、RAGFlow、Coze等AI应用开发平台，掌握RAG架构设计、提示词工程、Agent智能体编排、知识库构建等核心技术。能够独立完成从需求分析、架构设计、知识库搭建、工作流开发到测试部署的全链路开发，具备扎实的产品化交付能力。
+                    </div>
+                    <div class="assess-tags">
+                        <span class="tag accent">RAG优化</span>
+                        <span class="tag accent">工作流编排</span>
+                        <span class="tag accent">全链路开发</span>
+                    </div>
+                </div>
+
+                <div class="assess-card">
+                    <div class="assess-title">💪 核心职业素养</div>
+                    <div class="assess-text">
+                        <strong>沟通能力强：</strong>作为技术代表与多方单位高效协作，能精准连接业务需求与技术实现；<strong>逻辑能力强：</strong>硕士科研训练 + 工程规范体系化学习，具备严密的逻辑分析与技术文档撰写能力；<strong>抗压能力强：</strong>在职期间主动跨界学习AI技术，独立完成企业级AI项目，展现极强的自我驱动力与执行力。
+                    </div>
+                    <div class="assess-tags">
+                        <span class="tag green">沟通协调</span>
+                        <span class="tag green">逻辑严谨</span>
+                        <span class="tag green">抗压执行</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                event.target.closest('.nav-link').classList.add('active');
+            }
+        }
+
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('onclick').includes(id)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
