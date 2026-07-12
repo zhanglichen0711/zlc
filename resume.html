@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简历 - AI应用开发工程师</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5f7a;
+            --primary-light: #2e8b9e;
+            --accent: #c84b31;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --border: #e1e8ed;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a3a4a 0%, #1a5f7a 100%);
+            color: white;
+            padding: 40px 0;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .sidebar-avatar {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .sidebar-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            opacity: 0.85;
+            color: #a8d5e5;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin: 4px 16px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .section {
+            padding: 50px 60px;
+            max-width: 900px;
+        }
+
+        .section:not(:last-child) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        /* 个人信息卡片 */
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 40px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: baseline;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 100px;
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .info-value.highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .info-full {
+            grid-column: 1 / -1;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f0 100%);
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #c5dfe8;
+        }
+
+        .tag.accent {
+            background: linear-gradient(135deg, #fdf0ec 0%, #f8dcd4 100%);
+            color: var(--accent);
+            border-color: #e8c4b8;
+        }
+
+        /* 教育背景 */
+        .edu-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px 35px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .edu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .edu-school {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .edu-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edu-major {
+            font-size: 16px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .edu-time {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .edu-detail {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* 技术栈 */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .tech-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 3px solid var(--primary);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .tech-card.accent-card {
+            border-top-color: var(--accent);
+        }
+
+        .tech-category {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-category.accent {
+            color: var(--accent);
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-item {
+            background: #f0f4f8;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text);
+            border: 1px solid #e1e8ed;
+        }
+
+        .tech-item.master {
+            background: #e8f4f8;
+            border-color: #b8d4e3;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tech-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* 工作经历时间轴 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .exp-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .exp-company {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .exp-time {
+            background: #e8f4f8;
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .exp-position {
+            font-size: 16px;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .exp-location {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+
+        .exp-list {
+            list-style: none;
+        }
+
+        .exp-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            color: var(--text);
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        .exp-list li:last-child {
+            border-bottom: none;
+        }
+
+        .exp-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .exp-highlight {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .exp-highlight-title {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .exp-highlight-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* 项目经历 */
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .project-header {
+            margin-bottom: 20px;
+        }
+
+        .project-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .project-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .project-badge {
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .project-section {
+            margin-top: 20px;
+        }
+
+        .project-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .project-list {
+            list-style: none;
+            margin-left: 5px;
+        }
+
+        .project-list li {
+            padding: 6px 0;
+            padding-left: 18px;
+            position: relative;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .project-list li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            color: var(--primary-light);
+            font-size: 8px;
+            top: 9px;
+        }
+
+        .value-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e8f4f8 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #d4e9f0;
+        }
+
+        .value-box-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .value-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .value-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* 个人评估 */
+        .assess-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .assess-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .assess-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .assess-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .assess-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assess-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .assess-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .trait-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .trait-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .trait-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        /* 职业目标 */
+        .goal-card {
+            background: linear-gradient(135deg, #1a5f7a 0%, #2e8b9e 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .goal-text {
+            font-size: 16px;
+            line-height: 1.9;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .goal-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .goal-tag {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .section {
+                padding: 30px 25px;
+            }
+            .profile-card,
+            .tech-grid,
+            .assess-grid {
+                grid-template-columns: 1fr;
+            }
+            .value-grid,
+            .trait-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 选中高亮 */
+        ::selection {
+            background: var(--primary-light);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-avatar">XXX</div>
+            <div class="sidebar-name">XXX</div>
+            <div class="sidebar-title">AI应用开发工程师</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" onclick="scrollToSection('profile')">
+                    <span class="nav-icon">👤</span>
+                    <span>个人信息</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('education')">
+                    <span class="nav-icon">🎓</span>
+                    <span>教育背景</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('skills')">
+                    <span class="nav-icon">💻</span>
+                    <span>技术栈</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('experience')">
+                    <span class="nav-icon">🏗️</span>
+                    <span>工作经历</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('projects')">
+                    <span class="nav-icon">🚀</span>
+                    <span>项目经历</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('assessment')">
+                    <span class="nav-icon">⭐</span>
+                    <span>核心竞争力</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="scrollToSection('goal')">
+                    <span class="nav-icon">🎯</span>
+                    <span>职业目标</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            立足西安 · 建筑+AI复合背景
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 个人信息 -->
+        <section id="profile" class="section">
+            <h2 class="section-title">个人信息</h2>
+            <div class="profile-card">
+                <div class="info-row">
+                    <span class="info-label">姓 名</span>
+                    <span class="info-value">XXX</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">性 别</span>
+                    <span class="info-value">男</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">出生年月</span>
+                    <span class="info-value">199X年X月</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">政治面貌</span>
+                    <span class="info-value">中共党员</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">联系电话</span>
+                    <span class="info-value">1XX-XXXX-XXXX</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">电子邮箱</span>
+                    <span class="info-value">xxxxxx@email.com</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">现居城市</span>
+                    <span class="info-value highlight">西安</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">英语水平</span>
+                    <span class="info-value">CET-6</span>
+                </div>
+                <div class="info-row info-full">
+                    <span class="info-label">资格证书</span>
+                    <span class="info-value">二级建造师（建筑工程）</span>
+                </div>
+                <div class="info-row info-full">
+                    <span class="info-label">求职意向</span>
+                    <div class="tag-container">
+                        <span class="tag accent">AI应用开发工程师</span>
+                        <span class="tag accent">大模型应用工程师</span>
+                        <span class="tag">建筑行业AI产品经理</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 教育背景 -->
+        <section id="education" class="section">
+            <h2 class="section-title">教育背景</h2>
+            <div class="edu-card">
+                <div class="edu-header">
+                    <div class="edu-school">云南大学</div>
+                    <span class="edu-badge">211工程院校</span>
+                </div>
+                <div class="edu-major">土木水利专业 · 硕士研究生</div>
+                <div class="edu-time">2020年9月 — 2023年6月</div>
+                <div class="edu-detail">
+                    硕士阶段接受系统的科研训练，具备扎实的文献调研、数据分析与技术报告撰写能力。
+                    研究方向涉及建筑工程技术与管理，培养了严谨的逻辑思维和解决复杂工程问题的能力，
+                    为后续AI技术学习及产品化思维奠定了良好的方法论基础。
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术栈 -->
+        <section id="skills" class="section">
+            <h2 class="section-title">技术栈</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-category">🐍 编程与数据</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">Python</span>
+                        <span class="tech-item master">MySQL</span>
+                        <span class="tech-item">数据处理</span>
+                        <span class="tech-item">API开发</span>
+                    </div>
+                    <div class="tech-desc">掌握Python核心编程与MySQL数据库设计，能够独立完成数据清洗、接口开发与脚本自动化。</div>
+                </div>
+
+                <div class="tech-card accent-card">
+                    <div class="tech-category accent">🤖 AI应用开发平台</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">Dify</span>
+                        <span class="tech-item master">Coze</span>
+                        <span class="tech-item">RAGFlow</span>
+                        <span class="tech-item">工作流编排</span>
+                    </div>
+                    <div class="tech-desc">熟练运用Dify和Coze进行AI应用搭建，掌握RAGFlow企业级知识库部署与向量检索优化。</div>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-category">🧠 大模型应用技术</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">RAG检索增强</span>
+                        <span class="tech-item master">提示词工程</span>
+                        <span class="tech-item">Agent智能体</span>
+                        <span class="tech-item">知识库构建</span>
+                    </div>
+                    <div class="tech-desc">精通RAG架构设计与调优，擅长复杂提示词编写与多Agent协作系统的设计实现。</div>
+                </div>
+
+                <div class="tech-card accent-card">
+                    <div class="tech-category accent">🏗️ 行业专业知识</div>
+                    <div class="tech-items">
+                        <span class="tech-item master">GB50300/GB50204</span>
+                        <span class="tech-item">施工技术管理</span>
+                        <span class="tech-item">QC成果编制</span>
+                        <span class="tech-item">工法/专利撰写</span>
+                    </div>
+                    <div class="tech-desc">持有二级建造师资质，深入理解建筑工程规范体系、质量验收标准及技术成果编制流程。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工作经历 -->
+        <section id="experience" class="section">
+            <h2 class="section-title">工作经历</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="exp-card">
+                        <div class="exp-header">
+                            <div class="exp-company">XX集团（中建系统）</div>
+                            <span class="exp-time">2023.07 — 至今</span>
+                        </div>
+                        <div class="exp-position">技术员</div>
+                        <div class="exp-location">📍 西安及周边地区 | 建筑工程</div>
+                        <ul class="exp-list">
+                            <li><strong>施工技术管理：</strong>负责房建项目施工现场技术指导与管理，审核施工图纸，编制施工技术方案，组织技术交底，确保施工符合设计要求和规范标准。</li>
+                            <li><strong>质量验收管控：</strong>依据GB50300-2013及相关专业规范，负责检验批、分项工程、分部工程的质量验收，监督施工过程质量控制，参与隐蔽工程验收。</li>
+                            <li><strong>图纸变更管理：</strong>负责设计变更的接收、审核、传达与落地执行，评估变更对工期、成本、质量的影响，组织变更交底，确保变更指令准确执行。</li>
+                            <li><strong>技术成果输出：</strong>主导QC成果选题、数据分析与报告编制；参与企业工法编写及专利技术交底书撰写，将一线经验转化为可复用的技术资产。</li>
+                            <li><strong>多方协调沟通：</strong>作为技术代表与建设、监理、设计单位进行日常沟通，参与图纸会审、技术专题会议，协调解决现场技术问题。</li>
+                            <li><strong>技术资料管理：</strong>负责施工日志、隐蔽验收记录、检验报告等资料的收集、整理与归档，确保技术资料与工程进度同步、真实完整。</li>
+                        </ul>
+                        <div class="exp-highlight">
+                            <div class="exp-highlight-title">💡 工作亮点</div>
+                            <div class="exp-highlight-text">
+                                三年一线技术管理经验，深入理解建筑工程全流程痛点，具备从业务视角识别AI落地场景的独特能力。
+                                熟悉建筑企业技术质量管理的核心环节，能够精准将AI技术与实际业务需求对接。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目经历 -->
+        <section id="projects" class="section">
+            <h2 class="section-title">项目经历</h2>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-name">建筑工程技术质量管理助手</div>
+                    <div class="project-meta">
+                        <span>📅 2026.06 — 至今</span>
+                        <span>🛠️ Dify + RAGFlow + Python</span>
+                        <span class="project-badge">AI大模型应用</span>
+                    </div>
+                </div>
+
+                <div class="project-text">
+                    <strong>项目背景：</strong>建筑企业技术质量管理工作涉及大量规范查询、方案编制与审核、工法与专利编制，传统方式依赖人工翻阅和手工编写，效率低、易出错、知识传承困难。本项目基于Dify平台搭建面向建筑施工企业的智能化知识检索与内容生成系统，将企业核心知识资产与大模型能力相结合。
+                </div>
+
+                <div class="project-section">
+                    <div class="project-section-title">📚 知识库架构设计</div>
+                    <div class="project-text">
+                        基于RAGFlow搭建企业级知识库系统，将知识体系划分为四大类别：建筑工程标准规范图集、企业规章管理制度、优秀施工方案模板、科技质量成果模板（QC/工法/专利）。完成文档分片、解析、向量化存储与检索配置，针对"检验批"、"隐蔽工程"、"工序交接"等行业特定术语进行检索优化，显著提升专业场景下的召回准确率。
+                    </div>
+                </div>
+
+                <div class="project-section">
+                    <div class="project-section-title">🔍 工作流一：规范图集智能查询</div>
+                    <ul class="project-list">
+                        <li>设计"用户提问 → 意图识别 → 知识库检索 → 大模型生成回答"的标准流程</li>
+                        <li>实现自然语言查询：用户可用口语化提问（如"钢筋保护层厚度要求"），系统自动检索并生成带来源引用的专业回答</li>
+                        <li>设置检索阈值与置信度控制，确保回答质量，对未覆盖问题给出明确提示</li>
+                    </ul>
+                </div>
+
+                <div class="project-section">
+                    <div class="project-section-title">✅ 工作流二：施工方案智能审核与优化</div>
+                    <ul class="project-list">
+                        <li>设计方案审核工作流：上传方案 → 提取关键信息 → 与规范标准交叉比对 → 识别完整性、合规性与潜在风险 → 生成审核报告</li>
+                        <li>输出"问题描述 → 规范依据 → 修改建议"的结构化格式</li>
+                        <li>辅助编制：输入工程基本信息，自动检索优秀方案模板，生成大纲和关键章节初稿</li>
+                    </ul>
+                </div>
+
+                <div class="project-section">
+                    <div class="project-section-title">🏆 工作流三：科技质量专项问答</div>
+                    <ul class="project-list">
+                        <li>基于QC成果、工法文本、专利模板搭建专项问答工作流</li>
+                        <li>提供QC选题参考、原因分析思路推荐、工法编制框架生成、专利交底书模板调用</li>
+                        <li>帮助技术质量人员快速掌握编制规范、格式要求和优秀案例参考</li>
+                    </ul>
+                </div>
+
+                <div class="value-box">
+                    <div class="value-box-title">📈 项目价值与技术亮点</div>
+                    <div class="project-text">
+                        将传统需要数小时甚至数天翻阅资料的工作缩短至分钟级响应；沉淀企业知识资产，实现"经验型"向"知识驱动型"工作方式的升级。具备RAGFlow文档解析、分块策略、向量检索配置的技术能力，以及Dify平台完整的应用设计、工作流编排、知识库集成能力，能够独立完成从需求分析到测试迭代的全流程开发。
+                    </div>
+                    <div class="value-grid">
+                        <div class="value-item">
+                            <div class="value-number">分钟级</div>
+                            <div class="value-label">响应速度</div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-number">4大类</div>
+                            <div class="value-label">知识库体系</div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-number">3套</div>
+                            <div class="value-label">核心工作流</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心竞争力 -->
+        <section id="assessment" class="section">
+            <h2 class="section-title">核心竞争力</h2>
+            <div class="assess-grid">
+                <div class="assess-card">
+                    <div class="assess-title">🎓 复合型知识结构</div>
+                    <div class="assess-text">
+                        土木水利专业硕士 + 二级建造师资质 + 三年建筑工程一线技术管理经验，同时系统掌握AI大模型应用开发技术。是国内少有的"既懂建筑业务、又懂AI落地"的复合型人才，能够用AI技术精准解决建筑行业的真实痛点。
+                    </div>
+                </div>
+
+                <div class="assess-card">
+                    <div class="assess-title">🏗️ 扎实的一线实践经验</div>
+                    <div class="assess-text">
+                        在中建系统工作三年，深入施工现场，掌握施工技术管理、质量控制、方案编制、图纸变更管理等核心业务能力，熟悉建筑企业技术质量管理的全流程和关键环节。
+                    </div>
+                </div>
+
+                <div class="assess-card">
+                    <div class="assess-title">💡 业务视角做AI产品</div>
+                    <div class="assess-text">
+                        与纯技术背景的AI开发者不同，能够从一线业务人员的实际需求出发，设计出真正"能用、好用"的AI工具。对建筑施工场景中的术语体系、工作习惯、规范应用方式有深入理解，确保AI项目的落地效果。
+                    </div>
+                </div>
+
+                <div class="assess-card">
+                    <div class="assess-title">✍️ 逻辑思维与技术写作</div>
+                    <div class="assess-text">
+                        硕士阶段接受系统科研训练；工作中参与QC成果、工法、专利编制；具备二级建造师执业资格，对工程技术规范有系统性掌握，能够产出高质量的技术文档与产品方案。
+                    </div>
+                </div>
+
+                <div class="assess-card full-width">
+                    <div class="assess-title">🚀 持续学习与跨界转型</div>
+                    <div class="assess-text">
+                        在职期间主动利用业余时间进行系统性AI技术学习（MySQL、Python、Coze、Dify、RAGFlow、提示词工程、Agent等），独立完成具有行业深度的AI应用项目，展现了强大的自我驱动力和学习能力。正在黑马程序员进行AI大模型应用开发全栈课程的系统学习，具备实际动手开发能力。
+                    </div>
+                    <div class="assess-tags">
+                        <span class="tag">自学能力强</span>
+                        <span class="tag">执行力高</span>
+                        <span class="tag">跨界思维</span>
+                        <span class="tag">业务驱动</span>
+                    </div>
+                </div>
+
+                <div class="assess-card full-width">
+                    <div class="assess-title">🎯 性格特质</div>
+                    <div class="trait-list">
+                        <div class="trait-item">
+                            <div class="trait-icon">🔍</div>
+                            <div>细致严谨</div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">🤝</div>
+                            <div>善于沟通</div>
+                        </div>
+                        <div class="trait-item">
+                            <div class="trait-icon">⚡</div>
+                            <div>务实落地</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 职业目标 -->
+        <section id="goal" class="section">
+            <h2 class="section-title">职业目标</h2>
+            <div class="goal-card">
+                <div class="goal-text">
+                    立足西安，从事AI大模型应用开发相关工作，发挥建筑行业经验与AI技术的复合优势，
+                    致力于推动AI技术在建筑工程、智慧城市、工业智能化等领域的真实落地，
+                    成为<strong>"懂业务的AI专家"</strong>。追求一份稳定、有成长、能兼顾家庭的技术岗位。
+                </div>
+                <div class="goal-tags">
+                    <span class="goal-tag">智慧工地</span>
+                    <span class="goal-tag">建筑科技</span>
+                    <span class="goal-tag">工业智能化</span>
+                    <span class="goal-tag">国企数字化</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 导航切换与滚动定位
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // 更新导航状态
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                event.target.closest('.nav-link').classList.add('active');
+            }
+        }
+
+        // 滚动时自动高亮对应导航
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('onclick').includes(id)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
