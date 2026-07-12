@@ -853,7 +853,40 @@
             background: var(--primary-light);
             color: white;
         }
+        /* ===== Dify 智能体嵌入样式 ===== */
+        #dify-chatbot-bubble-button {
+            background-color: #00d4ff !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            transition: all 0.3s ease !important;
+            z-index: 9999 !important;
+        }
+
+        #dify-chatbot-bubble-button:hover {
+            background-color: #33ddff !important;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.7), 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+            transform: scale(1.08) !important;
+        }
+
+        #dify-chatbot-bubble-window {
+            width: 24rem !important;
+            height: 40rem !important;
+            border-radius: 16px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+            z-index: 9999 !important;
+        }
+
+        @media (max-width: 640px) {
+            #dify-chatbot-bubble-window {
+                width: 100vw !important;
+                height: 100vh !important;
+                bottom: 0 !important;
+                right: 0 !important;
+                border-radius: 0 !important;
+            }
+        }
+
     </style>
+<base target="_blank">
 </head>
 <body>
     <canvas id="particle-canvas"></canvas>
@@ -1323,6 +1356,29 @@
         }, { threshold: 0.3 });
 
         sections.forEach(section => observer.observe(section));
+    </script>
+    <!-- ===== Dify 智能体嵌入代码 ===== -->
+    <script>
+        window.difyChatbotConfig = {
+            token: 'FqW7K5kCRzr3dv6m',
+            baseUrl: 'http://192.168.88.100',
+            inputs: {
+                // You can define the inputs from the Start node here
+            },
+            systemVariables: {
+                // user_id: 'YOU CAN DEFINE USER ID HERE',
+                // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
+            },
+            userVariables: {
+                // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
+                // name: 'YOU CAN DEFINE USER NAME HERE',
+            },
+        }
+    </script>
+    <script
+        src="http://192.168.88.100/embed.min.js"
+        id="FqW7K5kCRzr3dv6m"
+        defer>
     </script>
 </body>
 </html>
